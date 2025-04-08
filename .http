@@ -1,0 +1,31 @@
+POST http://localhost:3000/pessoas/addPessoa
+Content-Type: application/json
+
+{
+  "nome": "João da Silva",
+  "email": "joao@email.com",
+  "senha": "senha123",
+  "telefone": "11999999999",
+  "dataNascimento": "1990-05-10T00:00:00.000Z",
+  "endereco": "Rua Exemplo, 123",
+  "tipo": "cliente",
+  "cpfOuCnpj": "123.456.789-00"
+}
+
+###
+
+POST http://localhost:3000/pessoas/addPessoa
+Content-Type: application/json
+
+{
+  "nome": "Loja XYZ",
+  "email": "contato@lojaxyz.com",
+  "senha": "segura123",
+  "telefone": "1133334444",
+  "dataNascimento": "1980-03-15T00:00:00.000Z",
+  "endereco": "Avenida Central, 500",
+  "tipo": "lojista",
+  "cpfOuCnpj": "12.345.678/0001-99",
+  "dadosBancarios": "Banco XPTO - Agência 0001 - Conta 123456-7"
+}
+
