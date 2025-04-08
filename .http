@@ -2,14 +2,14 @@ POST http://localhost:3000/pessoas/addPessoa
 Content-Type: application/json
 
 {
-  "nome": "João da Silva",
-  "email": "joao@email.com",
+  "nome": "João da Silva 2",
+  "email": "joao@email2.com",
   "senha": "senha123",
   "telefone": "11999999999",
   "dataNascimento": "1990-05-10T00:00:00.000Z",
   "endereco": "Rua Exemplo, 123",
   "tipo": "cliente",
-  "cpfOuCnpj": "123.456.789-00"
+  "cpfOuCnpj": "123.456.789-02"
 }
 
 ###

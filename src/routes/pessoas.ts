@@ -1,5 +1,6 @@
 import express from 'express';
 import { prisma }  from '../../prisma/db.mjs'
+import { hashPass } from '../../utils/bcryptHashPass.mjs';
 
 export const routerPessoas = express.Router();
 
@@ -16,13 +17,16 @@ routerPessoas.post('/addPessoa', async (req, res) => {
     dadosBancarios // só se for lojista
   } = req.body;
 
+  //hash
+  const senhaCriptografada = await hashPass(senha);
+
   try {
     // Cria a Pessoa
     const novaPessoa = await prisma.pessoa.create({
       data: {
         nome,
         email,
-        senha,
+        senha: senhaCriptografada,
         telefone,
         dataNascimento: new Date(dataNascimento),
         endereco

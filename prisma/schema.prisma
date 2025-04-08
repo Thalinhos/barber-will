@@ -17,9 +17,9 @@ model Pessoa {
   id                Int       @id @default(autoincrement())
   nome              String
   email             String    @unique
-  senha             String
+  senha             String?
   telefone          String?
-  dataNascimento    DateTime
+  dataNascimento    DateTime?
   endereco          String
 
   cliente           Cliente?
