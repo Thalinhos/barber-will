@@ -1,5 +1,6 @@
 // src/main.mjs
 import { prisma }  from '../prisma/db.mjs'
+import { routerCredentials } from './routes/credentialsAuth.ts'
 import { googleAuthRouter } from './routes/googleAuth.ts'
 import { routerPessoas }  from './routes/pessoas.ts'
 import express from 'express'
@@ -8,6 +9,7 @@ const app = express()
 app.use(express.json())
 app.use('/pessoas', routerPessoas)
 app.use('/googleAuth', googleAuthRouter)
+app.use('/credentialsAuth', routerCredentials)
 
 app.get('/', async (req, res) => {
   const pessoas = await prisma.pessoa.findMany({

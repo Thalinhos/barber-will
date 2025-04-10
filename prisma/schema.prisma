@@ -18,7 +18,7 @@ model Pessoa {
   nome              String
   email             String    @unique
   senha             String?
-  telefone          String?
+  telefone          String?   @unique
   dataNascimento    DateTime?
   endereco          String
 
@@ -39,4 +39,17 @@ model Lojista {
   dadosBancarios String
 
   pessoa         Pessoa  @relation(fields: [id], references: [id], onDelete: Cascade)
+
+  produtos Produto[]
+}
+
+model Produto {
+  id Int @id
+  nome String
+  descricao String
+  quantidade Int
+  valor Float
+
+  lojistaid Int
+  lojista Lojista @relation(fields: [lojistaid], references: [id])
 }
