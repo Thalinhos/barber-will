@@ -58,24 +58,24 @@ googleAuthRouter.get('/callback', async (req, res) => {
           endereco: 'Login com Google',
         },
       });
+      await prisma.cliente.create({
+        data: {
+          id: usuario.id,
+        }
+      })
     }
 
     // 5. Gerar JWT
     const token = jwt.sign(
-      { id: usuario.id, email: usuario.email },
+      { id: usuario.id, nome: usuario.nome ,email: usuario.email },
       process.env.SECRET,
       { expiresIn: '15min' }
     );
 
     // 6. Enviar resposta pro frontend
-    res.cookie('token', token, { httpOnly: true });
-    res.json({
-      usuario: {
-        id: usuario.id,
-        nome: usuario.nome,
-        email: usuario.email,
-      },
-    });
+    res.cookie('token', token, { httpOnly: true, sameSite: 'lax' });
+    res.redirect(`${process.env.FRONTEND_URL}/dashboard`);
+    
 
   } catch (error) {
     console.error('Erro na autenticação Google:', error);

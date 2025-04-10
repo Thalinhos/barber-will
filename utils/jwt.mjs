@@ -12,17 +12,20 @@ export const setToken = ((user) => {
 
 
 export const verifyToken = ((req, res, next) => {
-    const reqToken = req.headers['x-access-token'] || req.headers['authorization']
-    
-    if(!reqToken){ return res.status(400).json({error: 'Token é necessário para verificação.'}); }
-    
-    const token = reqToken?.split('Bearer ')[1]
 
-    if(!token){ return res.status(400).json({error: 'Token é necessário para verificação.'}); } 
+    let token = req.headers.authorization || req.headers.cookie
+    
+    if (!token) {
+    return res.status(400).json({ error: 'Token é necessário para verificação.' });
+    }
+
+    token = req.headers.cookie.split('token=')[1];
 
     jwt.verify(token, SECRET, (err, decoded) => {
-        if (err) { return res.status(400).json({error: 'Token expirado/inválido.'}); }
-        req.decoded = decoded
-        next()
+    if (err) {
+        return res.status(400).json({ error: 'Token expirado/inválido.' });
+    }
+    req.decoded = decoded;
+    next();
     });
 })

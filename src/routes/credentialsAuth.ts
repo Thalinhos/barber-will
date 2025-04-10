@@ -28,7 +28,7 @@ routerCredentials.post('/login', async (req, res) => {
     
     const token = setToken(user);
 
-    res.cookie('token', token, { httpOnly: true });
+    res.cookie('token', token, { httpOnly: true, sameSite: 'lax', });
     res.json({
         usuario: {
             id: user.id,

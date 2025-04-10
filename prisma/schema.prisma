@@ -28,7 +28,7 @@ model Pessoa {
 
 model Cliente {
   id        Int     @id
-  cpfOuCnpj String  @unique
+  cpfOuCnpj String?  @unique
 
   pessoa    Pessoa  @relation(fields: [id], references: [id], onDelete: Cascade)
 }
