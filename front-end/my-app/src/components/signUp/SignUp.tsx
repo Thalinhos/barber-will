@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { url } from "../../utils/url";
 
 export default function SignUp() {
     
@@ -64,6 +66,38 @@ export default function SignUp() {
     },
   }
 
+  const [loginForm, setLoginForm] = useState({
+        nome: '',
+        email: '',
+        senha: '',
+      });
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const res = await fetch(`${url}/credentialsAuth/register/`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(loginForm),
+    })
+
+    if(res.ok){
+      // navigate('/dashboard')
+      alert('ok')
+      console.log(res)
+    }
+    else{
+      alert("Erro ao fazer login")
+    }
+  }
+
+  async function googleAuth() {
+          window.location.href = `${url}/googleAuth`; 
+    }
+
   return (
     <div id="SignUpForm" style={styles.container}>
 
@@ -72,25 +106,31 @@ export default function SignUp() {
       <form style={styles.form}>
         <label style={styles.label}>
           Full name
-          <input type="text" placeholder="Matt Welsh" required style={styles.input} />
+          <input type="text" placeholder="Matt Welsh" required style={styles.input} 
+          onChange={(e) => setLoginForm({ ...loginForm, nome: e.target.value })}
+          />
         </label>
 
         <label style={styles.label}>
           Email
-          <input type="email" placeholder="hi@yourcompany.com" required style={styles.input} />
+          <input type="email" placeholder="hi@yourcompany.com" required style={styles.input} 
+          onChange={(e) => setLoginForm({ ...loginForm, email: e.target.value })}
+          />
         </label>
 
         <label style={styles.label}>
           Password
-          <input type="password" placeholder="Enter your password" required style={styles.input} />
+          <input type="password" placeholder="Enter your password" required style={styles.input} 
+          onChange={(e) => setLoginForm({ ...loginForm, senha: e.target.value })}
+          />
         </label>
 
-        <button type="submit" style={styles.btn}>Sign up</button>
+        <button type="submit" style={styles.btn} onClick={handleSubmit}>Sign up</button>
       </form>
 
       <div style={styles.divider}>Or</div>
 
-      <button style={styles.btnOutline}>Continue with Google</button>
+      <button style={styles.btnOutline} onClick={googleAuth}>Continue with Google</button>
 
       <p style={styles.terms}>
         By signing up you agree to our <a href="#">Terms</a>.

@@ -1,9 +1,47 @@
 import express from 'express';
 import { prisma }  from '../../prisma/db.mjs'
-import { compareHash } from '../../utils/bcryptHashPass.mjs';
+import { compareHash, hashPass } from '../../utils/bcryptHashPass.mjs';
 import { setToken, verifyToken } from '../../utils/jwt.mjs';
 
 export const routerCredentials = express.Router();
+
+//@ts-ignore
+routerCredentials.post('/register', async (req, res) => {
+    const { nome, email, senha } = req.body;
+    
+    if(!nome || !email || !senha){
+        return res.status(400).json({ error: 'Todos os campos obrigatórios devem ser preenchidos.' });
+    }
+
+    const user = await prisma.pessoa.findUnique({
+        where: {
+            email
+        }
+    });
+
+    if(user){
+        return res.status(400).json({ error: 'Email já utilizado.' });
+    }
+
+    try {
+
+        const senhaCriptografada = await hashPass(senha);
+
+        const userAdded = await prisma.pessoa.create({
+            data: {
+                nome,
+                email,
+                senha: senhaCriptografada,
+            }
+        })
+
+        return res.status(201).json({ message: "Usuário criado com sucesso" })
+    } catch (error) {
+        return res.status(400).json({ error: 'Erro ao registrar usuário, tente novamente mais tarde' });
+    }
+    
+
+})
 
 //@ts-ignore
 routerCredentials.post('/login', async (req, res) => {

@@ -20,7 +20,7 @@ model Pessoa {
   senha             String?
   telefone          String?   @unique
   dataNascimento    DateTime?
-  endereco          String
+  endereco          String?
 
   cliente           Cliente?
   lojista           Lojista?
