@@ -1,51 +1,38 @@
-POST http://localhost:3000/pessoas/addPessoa
+### Get all users
+GET http://localhost:3000/users
+Content-Type: application/json
+
+###
+
+### Get user by ID (substitua pelo ID real após criar)
+GET http://localhost:3000/users/67fec633ccbdb0124235aa03
+Content-Type: application/json
+
+###
+
+### Create user
+POST http://localhost:3000/users
 Content-Type: application/json
 
 {
-  "nome": "João da Silva 3",
-  "email": "joao@email6.com",
-  "senha": "senha123",
-  "telefone": "11999999999",
-  "dataNascimento": "1990-05-10T00:00:00.000Z",
-  "endereco": "Rua Exemplo, 123",
-  "tipo": "cliente",
-  "cpfOuCnpj": "123.456.789-03"
+  "name": "Alice2",
+  "email": "alice2@example.com",
+  "age": 28
 }
 
 ###
 
-POST http://localhost:3000/pessoas/addPessoa
+### Update user by ID
+PUT http://localhost:3000/users/67fecee2db02adf6585bade7
 Content-Type: application/json
 
 {
-  "nome": "Loja XYZ",
-  "email": "contato2@lojaxyz.com",
-  "senha": "segura123",
-  "telefone": "1133334444",
-  "dataNascimento": "1980-03-15T00:00:00.000Z",
-  "endereco": "Avenida Central, 500",
-  "tipo": "lojista",
-  "cpfOuCnpj": "12.345.678/0001-99",
-  "dadosBancarios": "Banco XPTO - Agência 0001 - Conta 123456-7"
+  "name": "alices AGAINNN updates",
+  "email": "thalinhos.updated@example.com"
 }
 
 ###
 
-POST http://localhost:3000/credentialsAuth/login
+### Delete user by ID
+DELETE http://localhost:3000/users/67fed1bedc00b6dd2917fcb7
 Content-Type: application/json
-
-{
-  "email": "contato2@lojaxyz.com",
-  "senha": "segura123"
-}
-
-### TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkxvamEgWFlaIiwiZW1haWwiOiJjb250YXRvMkBsb2pheHl6LmNvbSIsImlhdCI6MTc0NDI0NDE4MCwiZXhwIjoxNzQ0MjQ1MDgwfQ.A4X3MESpLvUzmb1KuRywXfNop-CiXie5x8yGxzoueVg
-POST http://localhost:3000/credentialsAuth/verifyToken
-Content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkxvamEgWFlaIiwiZW1haWwiOiJjb250YXRvMkBsb2pheHl6LmNvbSIsImlhdCI6MTc0NDI0NTM0MywiZXhwIjoxNzQ0MjQ2MjQzfQ.6vH_ysbviHemgCgAygKhzUuQrrF60pNBeTyhp9v5Nlg
-
-###
-
-GET http://localhost:3000/credentialsAuth/logout
-Content-Type: application/json
-

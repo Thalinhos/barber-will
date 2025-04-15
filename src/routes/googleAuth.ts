@@ -1,6 +1,7 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import { usersCollection } from '../models/db.mjs';
 
 
 dotenv.config();
@@ -40,6 +41,12 @@ googleAuthRouter.get('/callback', async (req, res) => {
     });
 
     const googleUser = await userInfoResponse.json();
+
+    const user = await usersCollection.findOne({ email: googleUser.email }) || null;
+
+    if (!user){
+      await usersCollection.insertOne({ email: googleUser.email, nome: googleUser.name });
+    } 
 
     const token = jwt.sign(
       { id: googleUser.id, nome: googleUser.name, email: googleUser.email },

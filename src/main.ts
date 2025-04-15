@@ -1,7 +1,7 @@
 // src/main.mjs
+import { usersRoutes } from './routes/usersRoutes.ts'
 import { routerCredentials } from './routes/credentialsAuth.ts'
 import { googleAuthRouter } from './routes/googleAuth.ts'
-import { routerPessoas }  from './routes/pessoas.ts'
 
 import express from 'express'
 import cors from 'cors'
@@ -16,11 +16,9 @@ app.use(
   })
 )
 app.use(express.json())
-app.use('/pessoas', routerPessoas)
+app.use('/users', usersRoutes)
 app.use('/googleAuth', googleAuthRouter)
 app.use('/credentialsAuth', routerCredentials)
-
-
 
 
 
