@@ -1,13 +1,12 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-import { prisma }  from '../../prisma/db.mjs'
+
 
 dotenv.config();
 export const googleAuthRouter = express.Router();
 
 googleAuthRouter.get('/', (req, res) => {
-  // 0. Redirecionar o usuário para a tela de login do Google
   const redirectUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.GOOGLE_CLIENT_ID}&redirect_uri=${process.env.GOOGLE_REDIRECT_URI}&response_type=code&scope=email profile&access_type=offline`;
   res.redirect(redirectUrl);
 });
@@ -16,7 +15,6 @@ googleAuthRouter.get('/callback', async (req, res) => {
   const code = req.query.code;
     
   try {
-    // 1. Trocar o code por um access token
     const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
       method: 'POST',
       headers: {
@@ -35,7 +33,6 @@ googleAuthRouter.get('/callback', async (req, res) => {
     const tokenData = await tokenResponse.json();
     const accessToken = tokenData.access_token;
 
-    // 2. Buscar informações do usuário no Google
     const userInfoResponse = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -44,37 +41,15 @@ googleAuthRouter.get('/callback', async (req, res) => {
 
     const googleUser = await userInfoResponse.json();
 
-    // 3. Verificar se o usuário já existe no banco
-    let usuario = await prisma.pessoa.findUnique({
-      where: { email: googleUser.email },
-    });
-
-    // 4. Se não existir, criar
-    if (!usuario) {
-      usuario = await prisma.pessoa.create({
-        data: {
-          nome: googleUser.name,
-          email: googleUser.email,
-          endereco: 'Login com Google',
-        },
-      });
-      await prisma.cliente.create({
-        data: {
-          id: usuario.id,
-        }
-      })
-    }
-
-    // 5. Gerar JWT
     const token = jwt.sign(
-      { id: usuario.id, nome: usuario.nome ,email: usuario.email },
+      { id: googleUser.id, nome: googleUser.name, email: googleUser.email },
       process.env.SECRET,
       { expiresIn: '15min' }
     );
 
-    // 6. Enviar resposta pro frontend
     res.cookie('token', token, { httpOnly: true, sameSite: 'lax' });
-    res.redirect(`${process.env.FRONTEND_URL}/dashboard`);
+    // res.redirect(`${process.env.FRONTEND_URL}/dashboard`);
+    res.json({ message: 'Autenticado com sucesso', token, googleUser });
     
 
   } catch (error) {
